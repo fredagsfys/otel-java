@@ -1,0 +1,11 @@
+spring:
+  application:
+    # Used as the OpenTelemetry service.name (override with otel.service.name or OTEL_SERVICE_NAME).
+    name: greeting-service
+
+server:
+  port: 8080
+
+# Everything else — OTLP endpoint, protocol, headers, sampling, resource attributes —
+# is read from the standard OTEL_* environment variables (see README). The OTLP exporter
+# defaults to http://localhost:4318, which matches the local collector in observability/.
