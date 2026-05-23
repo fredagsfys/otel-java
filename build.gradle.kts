@@ -47,7 +47,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-// Spotless with google-java-format is the Java analog of `gofmt`.
+// Spotless with google-java-format keeps formatting consistent and enforced.
 spotless {
     java {
         googleJavaFormat()

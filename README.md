@@ -13,9 +13,6 @@ with **zero hand-written instrumentation**. Everything under
 [`observability/`](observability/) is a local stack used only to *see* the
 telemetry while you develop — supporting infrastructure, not part of what you ship.
 
-This is the Java sibling of [otel-golang](https://github.com/fredagsfys/otel-golang);
-same idea, idiomatic to each language and to each language's OpenTelemetry story.
-
 ## What's inside
 
 | Path | Role |
@@ -112,9 +109,9 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=https://tempo.example.com:4317
 > **Prefer truly zero-code?** The
 > [OpenTelemetry Java agent](https://opentelemetry.io/docs/zero-code/java/agent/)
 > (`-javaagent:opentelemetry-javaagent.jar`) instruments a running JVM with no
-> dependencies or source changes — the mature, idiomatic Java analog of eBPF for
-> Go. This template uses the in-process starter instead: it travels with the build,
-> is easy to extend with custom spans, and needs no agent attachment.
+> dependencies or source changes. This template uses the in-process starter
+> instead: it travels with the build, is easy to extend with custom spans, and
+> needs no agent attachment.
 
 ## Make targets
 
