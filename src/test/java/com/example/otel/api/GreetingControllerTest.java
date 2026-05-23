@@ -31,12 +31,4 @@ class GreetingControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().json("{\"message\":\"Hello, Ada!\"}"));
   }
-
-  @Test
-  void healthReturnsOk() throws Exception {
-    mockMvc
-        .perform(get("/health"))
-        .andExpect(status().isOk())
-        .andExpect(content().json("{\"status\":\"ok\"}"));
-  }
 }

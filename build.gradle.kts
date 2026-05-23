@@ -31,6 +31,10 @@ dependencyManagement {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // Actuator provides production health endpoints, including Kubernetes-style
+    // liveness/readiness probes at /actuator/health/{liveness,readiness}.
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // OpenTelemetry: the starter auto-instruments HTTP, metrics, and logs in-process
     // (SDK, not the bytecode agent) and is configured via standard OTEL_* env vars /
     // otel.* properties — no manual SDK wiring needed.

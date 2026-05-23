@@ -11,6 +11,20 @@ server:
   # Drain in-flight requests on SIGTERM instead of dropping them.
   shutdown: graceful
 
+management:
+  endpoints:
+    web:
+      exposure:
+        # Only expose what's needed; actuator exposes nothing else over HTTP.
+        include: health, info
+  endpoint:
+    health:
+      # Expose /actuator/health/liveness and /actuator/health/readiness probes.
+      probes:
+        enabled: true
+      # Don't leak component details to unauthenticated callers.
+      show-details: when-authorized
+
 # Everything else — OTLP endpoint, protocol, headers, sampling, resource attributes —
 # is read from the standard OTEL_* environment variables (see README). The OTLP exporter
 # defaults to http://localhost:4318, which matches the local collector in observability/.

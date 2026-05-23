@@ -13,7 +13,7 @@ make server                         # Run the app (HTTP :8080)
 
 ```bash
 curl "http://localhost:8080/hello?name=World"
-curl "http://localhost:8080/health"
+curl "http://localhost:8080/actuator/health"          # liveness/readiness: /actuator/health/{liveness,readiness}
 open http://localhost:3000          # Grafana (admin/admin) → Explore
 ```
 

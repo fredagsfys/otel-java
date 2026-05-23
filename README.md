@@ -19,8 +19,8 @@ telemetry while you develop — supporting infrastructure, not part of what you 
 | --- | --- |
 | [`build.gradle.kts`](build.gradle.kts) | Build + the single OTel dependency (`opentelemetry-spring-boot-starter`). |
 | [`GreetingApplication.java`](src/main/java/com/example/otel/GreetingApplication.java) | Spring Boot entry point — no telemetry code. |
-| [`api/GreetingController.java`](src/main/java/com/example/otel/api/GreetingController.java) | Example endpoints — auto-instrumented by the starter. |
-| [`application.yaml`](src/main/resources/application.yaml) | Service identity; everything else is `OTEL_*` config. |
+| [`api/GreetingController.java`](src/main/java/com/example/otel/api/GreetingController.java) | Example `GET /hello` — auto-instrumented by the starter. |
+| [`application.yaml`](src/main/resources/application.yaml) | Service identity, graceful shutdown, Actuator health; the rest is `OTEL_*` config. |
 | [`observability/`](observability/) | Supporting stack to test against: OTel Collector, Tempo, Loki, Prometheus, Grafana. |
 
 > The example is organized by transport (`api`) because it's a demo. As your service
@@ -39,12 +39,23 @@ make server
 
 # 3. Generate some telemetry
 curl "http://localhost:8080/hello?name=World"
-curl "http://localhost:8080/health"
+curl "http://localhost:8080/actuator/health"
 ```
 
 `make run` does steps 1 and 2 together. The native interface is Gradle
 (`./gradlew bootRun`, `./gradlew test`); the Makefile is a thin convenience wrapper.
 Run `make help` for all targets.
+
+### Health & probes
+
+Spring Boot Actuator serves health (no hand-rolled endpoint):
+
+- `GET /actuator/health` — overall status
+- `GET /actuator/health/liveness` — Kubernetes liveness probe
+- `GET /actuator/health/readiness` — Kubernetes readiness probe
+
+Only `health` and `info` are exposed over HTTP, and component details are hidden
+from unauthenticated callers (`management.endpoint.health.show-details=when-authorized`).
 
 ### See the telemetry
 
