@@ -1,7 +1,7 @@
 spring:
   application:
     # Used as the OpenTelemetry service.name (override with otel.service.name or OTEL_SERVICE_NAME).
-    name: greeting-service
+    name: greeter-service-java
   lifecycle:
     # Max time to wait for in-flight requests to finish during graceful shutdown.
     timeout-per-shutdown-phase: 20s
