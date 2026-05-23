@@ -61,9 +61,9 @@ from unauthenticated callers (`management.endpoint.health.show-details=when-auth
 
 Open Grafana at <http://localhost:3000> (login `admin` / `admin`) → **Explore**:
 
-- **Traces** — datasource `Tempo`, run TraceQL `{ resource.service.name = "greeting-service" }`
+- **Traces** — datasource `Tempo`, run TraceQL `{ resource.service.name = "greeter-service-java" }`
 - **Metrics** — datasource `Prometheus`, search for `http_server_request_duration_seconds_count`
-- **Logs** — datasource `Loki`, query `{service_name="greeting-service"}`
+- **Logs** — datasource `Loki`, query `{service_name="greeter-service-java"}`
 
 To watch what the collector receives:
 
