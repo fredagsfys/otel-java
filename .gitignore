@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+
+# OS
+.DS_Store
+
+# Java
+*.class
+*.log
+hs_err_pid*
+
+# Env
+.env
