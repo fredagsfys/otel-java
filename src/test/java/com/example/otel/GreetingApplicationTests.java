@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /** Verifies the full application context (including OpenTelemetry auto-configuration) starts. */
 @SpringBootTest
-class OtelApplicationTests {
+class GreetingApplicationTests {
 
   @Test
   void contextLoads() {}

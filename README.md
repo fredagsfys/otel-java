@@ -21,7 +21,7 @@ same idea, idiomatic to each language and to each language's OpenTelemetry story
 | Path | Role |
 | --- | --- |
 | [`build.gradle.kts`](build.gradle.kts) | Build + the single OTel dependency (`opentelemetry-spring-boot-starter`). |
-| [`OtelApplication.java`](src/main/java/com/example/otel/OtelApplication.java) | Spring Boot entry point — no telemetry code. |
+| [`GreetingApplication.java`](src/main/java/com/example/otel/GreetingApplication.java) | Spring Boot entry point — no telemetry code. |
 | [`api/GreetingController.java`](src/main/java/com/example/otel/api/GreetingController.java) | Example endpoints — auto-instrumented by the starter. |
 | [`application.yaml`](src/main/resources/application.yaml) | Service identity; everything else is `OTEL_*` config. |
 | [`observability/`](observability/) | Supporting stack to test against: OTel Collector, Tempo, Loki, Prometheus, Grafana. |
