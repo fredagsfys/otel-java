@@ -16,7 +16,7 @@ management:
     web:
       exposure:
         # Only expose what's needed; actuator exposes nothing else over HTTP.
-        include: health, info
+        include: health
   endpoint:
     health:
       # Expose /actuator/health/liveness and /actuator/health/readiness probes.

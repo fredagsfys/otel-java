@@ -54,7 +54,7 @@ Spring Boot Actuator serves health (no hand-rolled endpoint):
 - `GET /actuator/health/liveness` — Kubernetes liveness probe
 - `GET /actuator/health/readiness` — Kubernetes readiness probe
 
-Only `health` and `info` are exposed over HTTP, and component details are hidden
+Only `health` is exposed over HTTP, and component details are hidden
 from unauthenticated callers (`management.endpoint.health.show-details=when-authorized`).
 
 ### See the telemetry
