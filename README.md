@@ -76,9 +76,20 @@ docker compose -f observability/docker-compose.yaml logs -f otel-collector
 There is no setup code. Adding the starter to [`build.gradle.kts`](build.gradle.kts)
 
 ```kotlin
-implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1"))
-implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+dependencyManagement {
+  imports {
+    mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1")
+  }
+}
+dependencies {
+  implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+}
 ```
+
+> Import the BOM through Spring's `io.spring.dependency-management`, **not** via Gradle
+> `platform()`. With `platform()`, Spring Boot's own dependency management still wins and
+> pins an older OpenTelemetry core, which crashes the starter at runtime with
+> `NoClassDefFoundError: io.opentelemetry.common.ComponentLoader`.
 
 auto-configures the OpenTelemetry SDK and instruments Spring MVC (server spans +
 `http.server.*` metrics), SLF4J/Logback logs (bridged and trace-correlated), and
