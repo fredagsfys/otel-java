@@ -109,12 +109,18 @@ Configure through the standard `OTEL_*` environment variables (or the matching
 | `OTEL_TRACES_SAMPLER` / `_ARG` | Sampling strategy / ratio | `parentbased_always_on` |
 | `OTEL_METRIC_EXPORT_INTERVAL` | Metric export interval (ms) | `60000` |
 | `OTEL_RESOURCE_ATTRIBUTES` | Extra resource attributes, e.g. `service.version=1.0.0,deployment.environment=prod` | _(none)_ |
-| `OTEL_SDK_DISABLED` | Disable all telemetry (used by tests) | `false` |
+| `OTEL_SDK_DISABLED` | Disable all telemetry entirely | `false` |
 
 > Unlike some SDKs, the Java OTLP exporter's default endpoint already includes the
 > `http://` scheme (plaintext), so it talks to the local collector with no extra
 > config. `make server` additionally sets a faster 5s metric interval and resource
 > attributes for local development.
+
+> Tests don't use `OTEL_SDK_DISABLED`. They set `otel.{traces,metrics,logs}.exporter=none`
+> (see [`src/test/resources/application.properties`](src/test/resources/application.properties))
+> so OpenTelemetry auto-configuration still runs — catching wiring/version regressions —
+> while nothing tries to reach a collector. `OTEL_SDK_DISABLED=true` would short-circuit
+> autoconfiguration and hide exactly those bugs.
 
 ### Switching backends
 
