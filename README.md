@@ -54,7 +54,7 @@ Spring Boot Actuator serves health (no hand-rolled endpoint):
 - `GET /actuator/health/liveness` — Kubernetes liveness probe
 - `GET /actuator/health/readiness` — Kubernetes readiness probe
 
-Only `health` and `info` are exposed over HTTP, and component details are hidden
+Only `health` is exposed over HTTP, and component details are hidden
 from unauthenticated callers (`management.endpoint.health.show-details=when-authorized`).
 
 ### See the telemetry
@@ -76,9 +76,20 @@ docker compose -f observability/docker-compose.yaml logs -f otel-collector
 There is no setup code. Adding the starter to [`build.gradle.kts`](build.gradle.kts)
 
 ```kotlin
-implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1"))
-implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+dependencyManagement {
+  imports {
+    mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1")
+  }
+}
+dependencies {
+  implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+}
 ```
+
+> Import the BOM through Spring's `io.spring.dependency-management`, **not** via Gradle
+> `platform()`. With `platform()`, Spring Boot's own dependency management still wins and
+> pins an older OpenTelemetry core, which crashes the starter at runtime with
+> `NoClassDefFoundError: io.opentelemetry.common.ComponentLoader`.
 
 auto-configures the OpenTelemetry SDK and instruments Spring MVC (server spans +
 `http.server.*` metrics), SLF4J/Logback logs (bridged and trace-correlated), and
@@ -98,12 +109,18 @@ Configure through the standard `OTEL_*` environment variables (or the matching
 | `OTEL_TRACES_SAMPLER` / `_ARG` | Sampling strategy / ratio | `parentbased_always_on` |
 | `OTEL_METRIC_EXPORT_INTERVAL` | Metric export interval (ms) | `60000` |
 | `OTEL_RESOURCE_ATTRIBUTES` | Extra resource attributes, e.g. `service.version=1.0.0,deployment.environment=prod` | _(none)_ |
-| `OTEL_SDK_DISABLED` | Disable all telemetry (used by tests) | `false` |
+| `OTEL_SDK_DISABLED` | Disable all telemetry entirely | `false` |
 
 > Unlike some SDKs, the Java OTLP exporter's default endpoint already includes the
 > `http://` scheme (plaintext), so it talks to the local collector with no extra
 > config. `make server` additionally sets a faster 5s metric interval and resource
 > attributes for local development.
+
+> Tests don't use `OTEL_SDK_DISABLED`. They set `otel.{traces,metrics,logs}.exporter=none`
+> (see [`src/test/resources/application.properties`](src/test/resources/application.properties))
+> so OpenTelemetry auto-configuration still runs — catching wiring/version regressions —
+> while nothing tries to reach a collector. `OTEL_SDK_DISABLED=true` would short-circuit
+> autoconfiguration and hide exactly those bugs.
 
 ### Switching backends
 

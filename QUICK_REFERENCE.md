@@ -21,9 +21,19 @@ open http://localhost:3000          # Grafana (admin/admin) → Explore
 
 ```kotlin
 // build.gradle.kts
-implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1"))
-implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+dependencyManagement {
+  imports {
+    mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.28.1")
+  }
+}
+dependencies {
+  implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+}
 ```
+
+Import the BOM via Spring's `io.spring.dependency-management`, not Gradle `platform()` —
+otherwise Spring Boot pins an older OTel core and the starter crashes at runtime
+(`NoClassDefFoundError: io.opentelemetry.common.ComponentLoader`).
 
 That's it — Spring MVC, metrics, and logs are auto-instrumented. No SDK setup code.
 
